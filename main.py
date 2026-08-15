@@ -1,27 +1,23 @@
-import database as database
+import app
+
 import streamlit as st
-from models.producto import Producto
+import database as database
 
-st.title("📦 Control de Inventario")
+st.set_page_config(page_title="Mi Tienda", layout="wide")
 
-# 1. Crear las tablas SQLite
-database.inicializar_tablas()
+# Menú lateral
+st.sidebar.title("🏪 Sistema de Tienda")
+opcion = st.sidebar.radio("Navegación:", ["📦 Inventario", "🛒 Registrar Venta", "📊 Historial"])
 
-# 2. Botón para cargar productos de prueba
-if st.button("Cargar productos de prueba"):
-    p1 = Producto(0, "Inca Kola 500ml", precio_compra=2.50, precio_venta=3.50, stock=50, es_favorito=True)
-    p2 = Producto(0, "Papa Rellena", precio_compra=2.00, precio_venta=3.50, stock=20, es_favorito=True)
+if opcion == "📦 Inventario":
+    st.title("📦 Gestión de Inventario")
+    database.inicializar_tablas()
+    # Aquí va la vista de inventario
+    
+elif opcion == "🛒 Registrar Venta":
+    st.title("🛒 Punto de Venta")
+    # Aquí va la vista de cobros
 
-    database.guardar_producto(p1)
-    database.guardar_producto(p2)
-    st.success("¡Productos guardados correctamente!")
-
-# 3. Leer y mostrar los productos en pantalla
-st.subheader("Productos en Base de Datos")
-lista_productos = database.obtener_productos()
-
-if lista_productos:
-    for prod in lista_productos:
-        st.write(prod)
-else:
-    st.info("No hay productos registrados en la base de datos.")
+elif opcion == "📊 Historial":
+    st.title("📊 Historial de Transacciones")
+    # Aquí van los reportes
